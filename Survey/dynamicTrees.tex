@@ -1,0 +1,45 @@
+
+\section{Dynamic Trees} \label{Dynamic Trees}
+
+Dynamic trees, also called link cut Trees, is a data structure that was presented by D. D. Sleator and R. E. Tarjan in 1983 \cite{sleator1983}.
+It is a forest where each node in a tree can maintain set of values assigned to them, such as a cost.
+Updates done to the tree are performed in amortized $O(\log k)$ time, where $k$ is the size of the tree the update is performed on.
+The operations supported by dynamic trees are
+
+\begin{description}
+  \item[Link($a$, $b$)] \hfill \\
+  Make $a$ a child of $b$. $a$ has to be a root for this to be possible.
+  \item[Cut($a$)] \hfill \\
+  Remove the edge from $a$ to its parent, making $a$ a root node in its own tree.
+  \item[SetCost($a$, $c$)] \hfill \\
+  Set the cost of $a$ to $c$.
+  \item[GetCost($a$)] \hfill \\
+  Returns the cost of $a$.
+  \item[AddCost($a$, $c$)] \hfill \\
+  Modify the cost of $a$ and all of its ancestors by adding $c$.
+  \item[GetPathLength($a$)] \hfill \\
+  Returns the number of nodes on the path from $a$ to the root of the tree $a$ is in.
+  \item[GetRoot($a$)] \hfill \\
+  Returns the root of the tree $a$ is in.
+  \item[GetChildren($a$)] \hfill \\
+  Returns the children of $a$.
+  \item[GetMinCostNode($a$)] \hfill \\
+  Returns the last node on the path from $a$ to the root of the tree that has the minimum cost of all the nodes on the path.
+  \item[GetBoundingNode($a$, $c$)] \hfill \\
+  Returns the first node on the path from $a$ to the root of the tree that has a cost less than or equal to $c$.
+\end{description}
+
+In max flow algorithms, a dynamic forest is typically used to represent paths of nodes in a way such that each node in the graph has a corresponding node in the dynamic forest.
+The nodes in the graph will have an edge which is the preferred edge to move flow along. Linking $a$ to $b$ represents that the edge $(a, b)$ is the preferred edge of $a$.
+The cost of the nodes in the dynamic forest will represent the residual capacity on the preferred edge.
+This way, a \emph{Tree~Push} can be performed, where moving flow along a path can be done in $O(\log n)$ time instead of $O(n)$ time.
+The specifics of how this is done depends on the max flow algorithm, the way it is done for Goldberg Tarjan in Section~\ref{GoldbergTarjanSection} is
+\begin{align*}
+&v_j \gets \mathrm{GetMinCostNode}(v_i)\\
+&c \gets \mathrm{GetCost}(v_j)\\
+& \mathrm{AddCost}(v_i, -c)\\
+& \text{Cut all GetMinCostNodes with 0 cost}
+\end{align*} 
+Since the dynamic tree can update the residual capacity of $k$ edges in $\log k$ time, it is not possible to keep a value updated in the graph.
+For this reason, algorithms will have an incorrect residual capacities in the graph while an edge or its corresponding back edge is in the dynamic tree. 
+The residual capacities are instead updated when a node is cut from the tree.

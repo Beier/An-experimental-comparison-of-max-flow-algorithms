@@ -1,0 +1,50 @@
+\section{Dinic 1970}
+\label{DinicSection}
+
+The Dinic algorithm was published in 1970 by Yefim Dinic \cite{dinic1970}. It is the paper that introduced the level graph and blocking flow, 
+which is basically a way of reducing the size of the graph before looking for augmenting paths.
+The running time of this algorithm is $O(n^2m)$ which should make it perform better on dense graphs than the algorithm by Edmonds and Karp.
+
+\subsection{The Algorithm}
+
+The algorithm first does a breath first search to filter some of the edges. In the search it marks nodes according to their distance from $s$.
+Only edges $(u, v)$ where the distance from $s$ to $u$ is less than the distance from $s$ to $v$ are used in the next step. 
+Additionally, once $t$ has been reached, no edges $(u, v)$ should be added where the distance from $s$ to $v$ is greater than the distance from $s$ to $t$.
+This results in a level graph that potentially has much fewer edges than the original graph.
+The special property of this graph is that all paths that goes from $s$ to $t$, will have the same length $k$.
+We then run a single depth first search on the graph to find all augmenting paths of length $k$. 
+When the depth first search reaches $t$, we send the flow on the path like in the algorithm by Edmonds and Karp, 
+jump back behind the first bounding edge on the path, and continue the depth first search from there.
+This means that the entire part of the graph that is in front of the bounding edge can be visited again if there is another path going to it.
+To avoid having the search process a part of the graph that can not reach $t$ multiple times, we mark nodes that can not reach $t$ as dead when they are discovered.
+When we have visited all edges on a node, we know that that node can no longer reach $t$. Edges going to dead nodes are removed once discovered.
+When the depth first search is done, and we have found all augmenting paths in the layer graph, we compute the residual network of the original graph.
+A new layer graph can then be computed based on the residual network.
+This process repeats until we arrive at a layer graph that is not connected to $t$, at which point all augmenting paths have been found.
+
+Correctness follows from the same argument as in Section~\ref{EK1972Section}.
+We always have a valid flow, and at the end of the algorithm, no augmenting path can be found from $s$ to $t$ in the residual network.
+
+
+\subsection{Analysis}
+
+Every time we have found a blocking flow in a level graph, we have found all augmenting paths of length $k$. The next level graph must have augmenting paths strictly longer than $k$.
+The reason is the same as in Section~\ref{EK1972Analysis}. The distance to a node never decrease because the nodes in an augmenting path have increasing distance from $s$.
+Instead of this being due to using a breath first search, it is because the level graph only contains edges to nodes that have a higher distance from $s$.
+Since the distance to $t$ never decrease, and we push along all augmenting paths of length $k$, all subsequent augmenting paths must have a length greater than $k$.
+The longest path possible from $s$ to $t$ is of length $n$, so we need to calculate level graphs and blocking flows in at most $n$ iterations. 
+
+Every time the depth first search visits a node, it runs through all of its edges.
+When it is done with one of the edges, and that part of the graph is dead, it removes the edge.
+This means that edges to nodes that can not reach $t$ can only be used once. So discovering and trimming the dead parts of the graph takes $O(m)$ time in total.
+
+If the part of the graph it visits is not dead, the path will end up by reaching $t$. In this case, an augmenting path is saturated, and the bounding edge is removed.
+This path will have length $k$, which is at most $n$, so finding and saturating the path will take $O(n)$ time. 
+Since we remove an edge every time we saturate a path, we can find at most $m$ such paths. This means that finding the paths take $O(nm)$ time.
+
+Computing the level graph was done with a breath first search that stops when it reaches $t$.
+A breath first search takes $O(m)$ time, so this yields the running time $O\left(n(m+nm)\right)=O(n^2m)$.
+
+Dynamic trees can be utilized to find the blocking flow in $O(m\log n)$ time, reducing the running time to $O(nm\log n)$, 
+but dynamic trees was not introduced until 1983 by D. Sleator and R. E. Tarjan \cite{sleator1983}.
+

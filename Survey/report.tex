@@ -1,0 +1,196 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[ansinew]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+%\usepackage{wrapfig}
+\usepackage{enumerate}
+\usepackage[final]{fixme}
+\usepackage{url}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{subfig}
+\usepackage{pdfpages}
+\usepackage{tocvsec2}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage[numbers]{natbib}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{algorithm}	
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage[titletoc,title]{appendix}
+\usepackage[dotinlabels]{titletoc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.8}
+\usepackage{rotating}
+\usepackage[section]{placeins}
+
+\graphicspath{{images/}}
+
+%Allow more page space to be used for figures. From: http://dcwww.camd.dtu.dk/~schiotz/comp/LatexTips/LatexTips.html#figplacement
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+%A figure must use at least 85% of page before it's allowed on a
+%single page:
+
+%no widows or orphans
+% \widowpenalty=300
+% \clubpenalty=300
+%allow rubberband values between paragraphs
+%\setlength{\parskip}{3ex plus 2ex minus 2ex}
+
+
+\renewcommand{\floatpagefraction}{0.85}
+
+\newcommand{\FIG}[2]{
+\begin{figure}%[!htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth,keepaspectratio]{#1}
+  \caption{#2}
+  \label{fig:#1}
+\end{figure}
+}
+
+\newcommand{\FIGSMALL}[2]{
+\begin{figure}%[htbp]
+  \centering
+  \includegraphics[width=0.4\textwidth,keepaspectratio]{#1}
+  \caption{#2}
+  \label{fig:#1}
+\end{figure}
+}
+
+\newcommand{\FIGMED}[2]{
+\begin{figure}%[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth,keepaspectratio]{#1}
+  \caption{#2}
+  \label{fig:#1}
+\end{figure}
+}
+
+\newcommand{\FIGAPP}[2]{
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=0.98\textwidth,keepaspectratio,angle=90]{#1}
+  \caption{
+    #2
+  }
+  \label{app:#1}
+\end{figure}
+}
+
+\newcommand{\FIGNOSIZE}[2]{
+\begin{figure}[htbp]
+  \centering
+  \includegraphics{#1}
+  \caption{
+    #2
+  }
+  \label{fig:#1}
+\end{figure}
+}
+
+
+
+\newcommand{\FIGH}[2]{
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth,keepaspectratio]{#1}
+  \caption{#2}
+  \label{fig:#1}
+\end{figure}
+}
+
+
+%svg importing
+\usepackage[]{import}
+\usepackage{color}
+\newcommand{\executeiffilenewer}[3]{%
+  \ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+  {\pdffilemoddate{#2}}>0%
+  {\immediate\write18{#3}}\fi%
+}
+\newcommand{\includesvg}[1]{%
+  \executeiffilenewer{#1.svg}{#1.pdf}%
+  {inkscape -z -D --file=#1.svg %
+    --export-pdf=#1.pdf --export-latex}%
+\input{#1.pdf_tex}%
+}
+
+\newcommand{\FIGSVG}[2] {
+  \begin{figure}[!t]
+    \centering
+    \def\svgwidth{.4\columnwidth}
+    \includesvg{images/#1}
+    \caption{#2}
+    \label{fig:#1}
+  \end{figure}
+}
+
+
+%\bibliographystyle{apalike}
+%\bibliographystyle{te}
+%\bibliographystyle{plainnat}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.75em width0.5em depth0.25em\fi}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+
+
+\begin{document}
+\input{title}
+
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+\listoffixmes{}
+
+\clearpage
+
+\input{Introduction}
+\input{GeneralTerminology}
+\input{Paradigms}
+\input{dynamicTrees}
+\input{Survey}
+\input{EK}
+\input{Dinic}
+\input{GT88}
+\input{KRT}
+\input{GR98}
+\input{heuristics}
+\input{implementation}
+\input{testsIntroduction}
+\input{results}
+\settocdepth{section}
+\clearpage
+
+\bibliography{mybib}{}
+%\bibliographystyle{plain}
+\bibliographystyle{alpha}
+
+
+\input{appendix.tex}
+
+\end{document}

@@ -1,0 +1,62 @@
+
+\section{Implementation}
+\label{ImplementationSection}
+
+Our first decision when we began implementing the algorithms was how to represent the graph.
+We wanted constant time lookup of a the edges of a node. Additionally, if we have an edge $(u, v)$, 
+we wanted in constant time to be able to find the nodes $v$, $u$ and the edge $(v, u)$ that we call the linked edge.
+We represent this such that each node has a pointer to an array of edges, each edge has a pointer to its target node and to its linked edge.
+To get the node an edge goes from, we have to go to the target node of the linked edge.
+
+Many algorithms need to be able to add their own information to the nodes and edges.
+We allowed them to do this by adding a void pointer to each node and edge that the algorithms can set to point to a custom object that contains the information needed.
+Most of our algorithms start out by allocating an array of $n$ such objects, and assigning them to the nodes.
+A better option could have been using templates so that the nodes could contain the special information inside them rather than in a totally different place in memory.
+That could save some cache misses when reading the information on a node, but it would require cloning the input graph to match the new template argument.
+
+We choose to implement our own dynamic trees. We did find a library \cite{dtreeLibrary}, but we found it too difficult to customize and to understand what exactly was going on.
+Our implementation is based on splay trees instead of the original version of dynamic trees.
+Implementing it our selves allowed us to more easily profile what takes time during the algorithms.
+
+Every time we run a test, we do the following steps
+\begin{enumerate}
+  \item Load the graph from a text file in digraph format
+  \item Clone the graph
+  \item Start the timer
+  \item Allocate the algorithm
+  \item Find the max flow
+  \item Deallocate the algorithm
+  \item Stop the timer
+  \item Verify that the output is correct
+  \item Deallocate the clone
+\end{enumerate}
+
+Step 2 to 9 is repeated three times per test.
+The verification is explained in detail in Section~\ref{AlgCorrectness}.
+The order in which we start the timers is done to ensure that the time we measure contains all work required except from loading the graph.
+
+It is a little different for the library algorithms, since they have to load the graph them selves.
+\begin{enumerate}
+  \item Allocate the algorithm
+  \item Get the algorithm to load the graph
+  \item Start the timer
+  \item Find the max flow
+  \item Deallocate the algorithm
+  \item Stop the timer
+  \item Verify that the output is correct
+\end{enumerate}
+In order to verify the library algorithms, we compare the max flow value to a value returned by one of our own algorithms.
+A potential concern here is that we deallocate the library algorithm before we stop the timer, which probably also deallocates the graph.
+We wanted to make sure that any additional memory allocated during the execution of the library algorithms is being cleaned up, and not cached for future runs.
+The time for cleaning is measured in our own algorithms, so we wanted that to be true for the library algorithms as well.
+We have run some performance tests on the library algorithms, and found that the vast majority of the time spent is spent calculating the actual flow, and not on deallocating the algorithm.
+
+Other data structures we implemented include a circular queue and a linked list.
+The linked list is implemented to reuse elements so that it does not have to allocate and deallocate linked list nodes every time something is added or removed from a linked list.
+To do this, we implemented a singleton linked list node cache that is shared between all linked lists.
+All algorithms clear the linked list cache as part of their clean up procedure so they do not affect subsequent algorithms.
+
+Other things we did to improve performance is to always allocate large chunks of memory at the time. 
+As an example, the linked list cache has a method to bulk allocate a number of linked list nodes.
+Algorithms that use the linked list call this method as part of the initialization with an estimate for the highest number of linked list nodes they will need at any point in the algorithm.
+

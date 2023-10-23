@@ -1,0 +1,25 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Installation}{}% 2
+\BOOKMARK [1][-]{section.3}{Environment: algorithmic}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{The Simple Statement}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{The if-then-else Statement}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{The for Loop}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{The while Loop}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{The repeat-until Loop}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.6}{The Infinite Loop}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.7}{The Logical Connectives}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.8}{The Precondition}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.9}{The Postcondition}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.10}{Returning Values}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.11}{Printing Messages}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.12}{Comments}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.13}{An Example}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.14}{Options/Customization}{section.3}% 17
+\BOOKMARK [1][-]{section.4}{Environment: algorithm}{}% 18
+\BOOKMARK [2][-]{subsection.4.1}{General}{section.4}% 19
+\BOOKMARK [2][-]{subsection.4.2}{An Example}{section.4}% 20
+\BOOKMARK [2][-]{subsection.4.3}{Options}{section.4}% 21
+\BOOKMARK [2][-]{subsection.4.4}{Customization}{section.4}% 22
+\BOOKMARK [1][-]{section.5}{References in Algorithms}{}% 23
+\BOOKMARK [1][-]{section.6}{Known Issues}{}% 24
+\BOOKMARK [1][-]{section.7}{General Hints}{}% 25

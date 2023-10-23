@@ -1,0 +1,103 @@
+
+\clearpage
+
+\section{Global Relabelling Heuristic}
+\label{HeuristicsSection}
+
+All of our implementations of the Goldberg Tarjan and King Rao algorithms had a problem.
+After the minimum cut of the graph has been saturated, these algorithms have to push the remaining excess back to the source.
+This requires that all the nodes behind the minimum cut are relabelled above $n$.
+We found that there often was very far between the label of the nodes and~$n$, at the time the minimum cut was saturated. 
+This made the algorithms spend a lot of time taking small steps relabelling towards $n$, while pushing flow back and forth.
+
+To alleviate this problem, we implemented a heuristic for all versions of these algorithms.
+The heuristic is taken from a paper by Cherkassky and Goldberg \cite{CherkasskyGoldberg97}, and is called a global relabelling heuristic.
+It updates the label of all the nodes in the graph, based on their distance to the target and source nodes.
+This is done by first doing a breath first search from the target, visiting nodes that can push more flow towards the target.
+The label of these nodes are updated to their distance to the target. 
+After this, we run a similar breath first search from the source, but only look at nodes that was not visited in the previous breath first search, and that can send flow towards source.
+These nodes $v$ get the label $n + distance(v, s)$.
+
+We run this heuristic during initialization, and once in a while during the execution of the algorithms.
+The reason we run it at the start is that a node $v$ will have to be relabelled to $distance(v, t)$ anyway before its excess can be pushed to the target node.
+The other situation where we want to run the global relabel is right after the minimum cut has been saturated.
+When the minimum cut has been saturated, many nodes before the min cut have to be relabelled above $n$.
+
+For all algorithms except the King Rao algorithm without optimized memory, relabelling multiple labels up could be done in the same time as relabelling one label up.
+The problem with the King Rao algorithm that uses $O(nm)$ memory is that when relabelling from $k$ to $l$, the game has to be updated for all labels between $k$ and $l$.
+It has to perform edge kills on all edges incident to the nodes that correspond to labels between $k$ and $l$. 
+This is not an issue for the version of the algorithm that uses $O(m)$ memory, because it only has two nodes in the game for each node in the graph.
+Here edges for those two nodes just have to be added or removed according to the new label.
+
+There is no easy way to detect when the minimum cut has been saturated. If there were, we could stop the algorithm there, and report the max flow.
+The best way to check if the minimum cut has been saturated is to just do a global relabelling. So we need to make some trigger that decides when to run the global relabel algorithm.
+We have several different implementations of such triggers. One is based on detecting when flow is pushed around in a cycle, and the others are based on monitoring the excess of the target node.
+
+Doing a single global relabelling is just a breath which takes $O(m)$ time.
+If the trigger only run the heuristic $O(n)$ times, this can be done within the $O(nm)$ time bound of most algorithms.
+
+For algorithms that use dynamic trees, it takes $O(\log n)$ time to get the capacity on the edges instead of just $O(1)$.
+The algorithm need to read the capacity because it is only allowed to follow edges with positive residual capacity when doing the bfs.
+This causes the global relabelling to take $O(m\log n)$ time instead.
+
+\subsection{Cycle Trigger}
+
+When the minimum cut has been saturated, flow is being pushed back and forth between nodes behind the cut while they are being relabelled up above~$n$.
+This means that flow is being pushed around in cycles  $(v_1, v_2, \cdots, v_k, v_1)$. 
+When that happens, at least one of the nodes in the cycle has to be relabelled more than one label up.
+To push flow from $v_i$ to $v_{i+1}$, $d(v_i)$ must be greater than $d(v_{i+1})$. 
+This means that if no label has been relabelled twice by the time $v_k$ gets the excess, then $d(v_1) > d(v_k)$, so $v_k$ will have to be relabelled at least twice to send the flow to $v_1$.
+
+Based on this trigger, the global relabelling heuristic runs in $O(n^2m)$ time. 
+It takes $O(m)$ time to do the breadth first searches, and we have $n$ nodes that can be relabelled twice in a row $n$ times.
+
+\subsection{Pass Trigger}
+In some of our tests, we found that nodes were very often relabelled more than one label up, even though the minimum cut had not been reached. 
+In particular, in the tests of graphs described in Section~\ref{AKGraphSection}, it very often relabels two labels up without pushing flow around in a cycle.
+For this reason, we decided to make another way of triggering the global relabel.
+
+Our second idea is to use the FIFO queue of nodes that all of our push-relabel algorithms use to decide the order that nodes are being processed.
+Like in the description of the Goldberg Tarjan algorithm, we use the notation of passes.
+After a global relabelling check, we note which node is the last node in the queue. 
+After that node has been processed, we consider a pass to be finished, and we perform another check to see if we should do a global relabelling.
+To decide whether to do a global relabelling, we check if the target node has received any excess during the pass, and since last relabel.
+We only perform another global relabelling, if the target has received flow since the last global relabelling, but not during the pass that just finished.
+
+The idea behind this is that once the minimum cut has been saturated, the excess behind the cut can not reach the target. 
+This means that once the excess in front of the cut has reached the target, the target will no longer get any excess.
+After a global relabelling, if the minimum cut was found, then nodes before the cut was relabelled above $n$. 
+In that case, there is no reason to do any more global renaming, and the target won't receive any more excess.
+If the minimum cut was not found, there must be some excess that can be pushed to the target. The minimum cut can not be saturated before this excess has reached the target.
+In either case, there is no reason to do a global relabel if the target has not received excess since the last global relabel.
+
+There are $O(n^2)$ passes, so this also results in a heuristic that runs in runs in $O(n^2m)$ time. 
+
+\subsection{Node Count Trigger}
+While testing the Pass Trigger, we found that basing the check on the passes sometimes caused the global relabelling to run very often. 
+If there are few nodes in the passes, we might run a second global relabel after as little as two nodes has been processed.
+This is a problem, since the global relabelling algorithm is a bit expensive, especially for algorithms that use dynamic trees. 
+
+To resolve the issue with the small passes, we made a third trigger that is triggered after processing $f(G)$ nodes, instead of after a pass. 
+Here $f(G)$ is some function of the graph. More detail on how we choose $f(G)$ can be seen in Section~\ref{GRNFGSection}.
+
+The logic checking whether the target node has received excess in the Pass Trigger is also used here.\\
+
+The cycle trigger, and the idea of running the heuristic after $O(n)$ nodes have been processed come from the article by Cherkassky and Goldberg \cite{CherkasskyGoldberg97}.
+We have not seen the idea with checking the excess on the target node anywhere though.
+
+\subsection{Gap relabelling}
+Cherkassky and Goldberg \cite{CherkasskyGoldberg97} also presented a heuristic called gap relabelling.
+The idea is that if no nodes have label $k$, then all nodes with a label higher than $k$ can never reach $t$, so they can be relabelled to $n$.
+We decided to focus on the global relabelling heuristic, and skipped the gap heuristic. 
+According to Cherkassky and Goldberg \cite{CherkasskyGoldberg97}, FIFO implementations, as we have, do not benefit significantly from the gap relabelling when global relabelling is already used.
+
+
+
+
+
+
+
+
+
+
+

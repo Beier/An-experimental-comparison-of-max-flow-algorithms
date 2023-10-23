@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Graph">
+      <UniqueIdentifier>{9b28709e-e4f2-41dd-9a78-c81d695021f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms">
+      <UniqueIdentifier>{a23b03c0-3dbb-491e-bf17-572685819cb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{7f3b17ca-a0c8-48d7-bce6-0c55a31a8131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\Dinic">
+      <UniqueIdentifier>{6dc44954-21d1-4152-85f1-218714d18464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\EdmundKarp">
+      <UniqueIdentifier>{29753afa-bd09-4f90-afd3-ba5db374d250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\GoldBergTarjan1988">
+      <UniqueIdentifier>{7ff50c34-09ca-43e0-9da7-16786681fe98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\DynamicTrees">
+      <UniqueIdentifier>{92f3cc9e-6867-4972-8c9c-0489949c8c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\GoldbergRao1998">
+      <UniqueIdentifier>{36789a60-bf92-47e4-871f-a87509964644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\GoldbergRao1998\BlockingFlow">
+      <UniqueIdentifier>{3924fb0d-92e9-4f71-9205-9799c1c810fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\KingRaoTargan1994">
+      <UniqueIdentifier>{3b9923c8-adf3-4a95-94d4-85499a6fa3b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\ModifiedKRT">
+      <UniqueIdentifier>{26c3c20a-b9b6-4b74-91cb-f83dff208ba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\KingRao1992">
+      <UniqueIdentifier>{8cbc3deb-0c3b-4cc7-8c38-fc9b044750eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\OwnDynamicTree">
+      <UniqueIdentifier>{e98e69bc-11da-45ca-b110-add15115a056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\KRTModDyn">
+      <UniqueIdentifier>{c1c2243f-a38a-4273-8b30-2c3f0b2ff881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\Parallel">
+      <UniqueIdentifier>{b088d484-2f0b-4e57-93f5-16ea6f9a9480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaxFlowAlgorithms\Library">
+      <UniqueIdentifier>{93344fa1-c2e1-4931-8c06-490de4b8935f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Graph\Graph.h">
+      <Filter>Source Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\MaxFlowAlgorithm.h">
+      <Filter>Source Files\MaxFlowAlgorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Queue.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\Dinic\Dinic.h">
+      <Filter>Source Files\MaxFlowAlgorithms\Dinic</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Debug.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\EdmundKarp\TestEdmundKarp.h">
+      <Filter>Source Files\MaxFlowAlgorithms\EdmundKarp</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\EdmundKarp\EdmundKarp.h">
+      <Filter>Source Files\MaxFlowAlgorithms\EdmundKarp</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\EdmundKarp\TestEdmundKarp.h">
+      <Filter>Source Files\MaxFlowAlgorithms\EdmundKarp</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanN3.h">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldBergTarjan1988</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicTree.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DynamicTrees\seq.h">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DynamicTrees\seq-inl.h">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DynamicTrees\tree.h">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DynamicTrees\tree-extra.h">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DynamicTrees\tree-inl.h">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DynamicTrees\type.h">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\DynamicTrees\Forest.h">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\FlowVerifyer.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanDyn.h">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldBergTarjan1988</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\UtilityFunctions.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\LevelLinkedLists.h" />
+    <ClInclude Include="Utilities\LinkedList.h" />
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergRao1998\BlockingFlow\BlockingFlow.h">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldbergRao1998\BlockingFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergRao1998\GoldbergRao1998.h">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldbergRao1998</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\KingRaoTarjan1994\KingRaoTarjan1994.h">
+      <Filter>Source Files\MaxFlowAlgorithms\KingRaoTargan1994</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\ModifiedKRT\ModifiedKRT.h">
+      <Filter>Source Files\MaxFlowAlgorithms\ModifiedKRT</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\KingRao1992\KingRao1992.h">
+      <Filter>Source Files\MaxFlowAlgorithms\KingRao1992</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\OwnDynamicTree\SplayTree.h">
+      <Filter>Source Files\Utilities\OwnDynamicTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\OwnDynamicTree\DynamicTree.h">
+      <Filter>Source Files\Utilities\OwnDynamicTree</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\KRTModDyn\KrtModDyn.h">
+      <Filter>Source Files\MaxFlowAlgorithms\KRTModDyn</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\Parallel\ParallelAlgorithm.h">
+      <Filter>Source Files\MaxFlowAlgorithms\Parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\LibraryAlgorithms.h">
+      <Filter>Source Files\MaxFlowAlgorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\Library\GridGraph_3D_6C.h">
+      <Filter>Source Files\MaxFlowAlgorithms\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\Library\GridGraph_3D_6C_MT.h">
+      <Filter>Source Files\MaxFlowAlgorithms\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="MaxFlowAlgorithms\Library\GridGraph_3D_26C.h">
+      <Filter>Source Files\MaxFlowAlgorithms\Library</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\QueueTests.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphReader.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphWriter.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphVisualizer.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Debug.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\EdmundKarp\EdmundKarp.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\EdmundKarp</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\EdmundKarp\TestEdmundKarp.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\EdmundKarp</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\Dinic\Dinic.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\Dinic</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\Graph.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphGenerator.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\EdgeEnumerator.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanN3.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldBergTarjan1988</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphBinaryReaderWriter.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\Cloner.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\DynamicTrees\Forest.cpp">
+      <Filter>Source Files\Utilities\DynamicTrees</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\FlowVerifyer.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanDyn.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldBergTarjan1988</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\LinkedList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergRao1998\BlockingFlow\BlockingFlow.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldbergRao1998\BlockingFlow</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergRao1998\GoldbergRao1998.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\GoldbergRao1998</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\KingRaoTarjan1994\KingRaoTarjan1994.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\KingRaoTargan1994</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\ModifiedKRT\ModifiedKRT.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\ModifiedKRT</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\KingRao1992\KingRao1992.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\KingRao1992</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\DigraphLoader.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\KRTModDyn\KrtModDyn.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\KRTModDyn</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxFlowAlgorithms\Parallel\ParallelAlgorithm.cpp">
+      <Filter>Source Files\MaxFlowAlgorithms\Parallel</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

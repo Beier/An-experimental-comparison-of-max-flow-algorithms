@@ -1,0 +1,20 @@
+
+
+An implementation of dynamic trees are required in the Goldberg-Tarjan algorithm aswell as in the Orilin algorithm. 
+A dynamic tree implementation consists of a forest of trees where certain operations are avalible on the nodes of the trees. 
+The nodes in the tree often have values associated with them to represent a cost.
+The relevant operations are
+* findRoot(v) - Return the root of the tree containing the node v.
+* findSize(v) - Return the size of the tree containing the node v.
+* findValue(v) - Return the value of the node v.
+* findMin(v) - Return the ancestor of v with the lowest value.
+* ChangeValue(v, x) - Add x to the value of v and all of its ancestors.
+* Link(v, w) - Insert v into the tree for w.
+* Cut(v) - Cut v out of the tree it is currently in, making it the root of a new tree.
+All of the above operations can be done in O(log(n)) time.
+
+We choose to use a library for dynamic trees instead of implementing it our selves, since we want to focus on max flow algorithms.
+The library we choose to use is written by David Eisenstat as part of his Ph.D. It is both very flexible and efficient.
+This library implements all the above functions in amortized O(log(n)) time. The author argues that while it is possible to make a worst case O(log(n)) algorithm,
+he found that the amortized algorithm is faster in practice.
+As an example of how to use the library, Eisenstat implemented the Goldberg Tarjan algorithm with and without dtrees, which we also use as a comparison of our max flow algorithms.

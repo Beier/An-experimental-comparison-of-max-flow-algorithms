@@ -1,0 +1,34 @@
+\section{Terminolgy Table}
+
+\begin{description}
+  \item[$G=(V, E)$] \hfill \\
+  A graph $G$ with a set of nodes $V$ and a set of edges $E$. We assume that $(u, v)\in E \Rightarrow (v, u) \in E$.
+  
+  \item[$n=|V|$ and $m=|E|$] \hfill \\
+  $n$ and $m$ are used to represent the number of nodes and the number of edges in the graph respectively.
+	
+  \item[$u$ and $v$] \hfill \\
+  $u$ and $v$ are typically used to represent nodes, except when $u$ is used as a function.
+  
+  \item[$(u, v)$] \hfill \\
+  This syntax represents the edge from $u$ to $v$.
+    
+  \item[$cap(u, v)$] \hfill \\
+  The capacity of the edge from $u$ to $v$. If the edge does note exist, we assume the capacity is $0$.
+  
+  \item[$f(u, v)$] \hfill \\
+  The flow of the edge from $u$ to $v$. If the edge does note exist, we assume the flow is $0$.
+  
+  \item[$u(u, v):=cap(u, v)-f(u, v)$] \hfill \\
+  The residual capacity of node $v$. An edge $(u, v)$ is refered to as residual if $u(u, v)>0$.
+
+  \item[$ucap(u, v):=cap(u, v)+cap(v, u)$] \hfill \\
+  The undirected capacity of an edge $(u, v)$ 
+  
+  \item[$e(v):= \sum\limits_{u\in V}{f(u, v) - f(v, u)}$] \hfill \\
+	The excess of a node. Basically, the incoming flow minus the outgoing flow.
+
+  \item[$d(v)$] \hfill \\
+	In the push-relabel paradigm, $d(v)$ represents the label of a node. This is a natural number $0 \leq d(v) \leq 2n$.
+  
+\end{description}

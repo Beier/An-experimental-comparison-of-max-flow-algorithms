@@ -1,0 +1,37 @@
+\section{Edmonds Karp 1972}
+\label{EK1972Section}
+
+The Edmonds Karp algorithm is one of the first and simplest max flow algorithms. 
+It was published in 1970 by Yefim Dinic \cite{dinic1970} and in 1972 by Jack Edmonds and Richard Karp \cite{Edmonds1972}.
+It is a small variation on the Ford Fulkerson algorithm from 1956 \cite{FordFulkerson}, that limits the number of augmenting paths to $O(nm)$, and brings the worst case running time from $O(nmU)$ to $O(nm^2)$.
+
+\subsection{The Algorithm}
+
+The algorithm works by repeatedly finding the shortest augmenting path using a breadth first search from $s$ to $t$.
+When such a path $P=(v_1, v_2, ..., v_k)$ where $k\geq 2, v_1 = s, v_k = t$ is found, it calculates the bounding capacity \smash{$\min_{i=1, \cdots, k-1} r(v_i, v_{i+1})$}, 
+and sends that much flow over the path.
+It keeps doing this in the residual network until no more augmenting paths exist.
+
+Correctness follows from the fact that the algorithm terminates when no more augmenting paths from $s$ to $t$ are found in the residual network, 
+and the fact that the algorithm always keeps a valid flow.
+
+The algorithm never violates any capacity constraints, because when it sends flow, it sends flow according to the minimum residual capacity on the path.
+It also never produces any excess in nodes other than $s$ and $t$, because all flow is pushed along paths from $s$ to $t$.
+
+\subsection{Analysis}
+\label{EK1972Analysis}
+
+The algorithm performs a breadth first search for each augmenting path in the graph. A single breadth first search takes $O(m)$ time.
+Every time the algorithm finds an augmenting path, it does a push along it. 
+There must be at least one edge $(u, v)$ on this path that is saturated, namely the edge with the minimum capacity.
+For this edge to be in the path, the distance from $s$ to $u$ must be less than the distance from $s$ to $v$.
+After the edge has been saturated, it can not be used again before flow has been pushed the opposite way, 
+which requires that the distance from $s$ to $v$ becomes less than the distance from $s$ to $u$.
+The distance from $s$ to any node can not be greater than $n$, and if the distances never decreases, so an edge can only be saturated $n$ times.
+
+The only way we modify the distances is by pushing flow along the augmenting path. Saturated edges are effectively removed, and back edges are added back in if their residual capacity was zero.
+Removing an edge can not reduce the distance to a node. Adding an edge could, but the edges $(v_i, v_{i-1})$ we might add point the opposite way on the augmenting path which was found in a breath first search.
+Adding $(v_i, v_{i-1})$ back in can not reduce the distance to $v_{i-1}$, because the distance to $v_i$ was already greater than the distance to $v_{i-1}$.
+
+To summarize, there are $m$ edges that can be saturated $n$ times, each time requiring a breath first search which takes time $O(m)$.
+This results in the running time of $O(nm^2)$.

@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DynamicTree.h" />
+    <ClInclude Include="MaxFlowAlgorithms\Dinic\Dinic.h" />
+    <ClInclude Include="Graph\Graph.h" />
+    <ClInclude Include="MaxFlowAlgorithms\EdmundKarp\EdmundKarp.h" />
+    <ClInclude Include="MaxFlowAlgorithms\EdmundKarp\TestEdmundKarp.h" />
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergRao1998\BlockingFlow\BlockingFlow.h" />
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergRao1998\GoldbergRao1998.h" />
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanDyn.h" />
+    <ClInclude Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanN3.h" />
+    <ClInclude Include="MaxFlowAlgorithms\KingRao1992\KingRao1992.h" />
+    <ClInclude Include="MaxFlowAlgorithms\KingRaoTarjan1994\KingRaoTarjan1994.h" />
+    <ClInclude Include="MaxFlowAlgorithms\KRTModDyn\KrtModDyn.h" />
+    <ClInclude Include="MaxFlowAlgorithms\LibraryAlgorithms.h" />
+    <ClInclude Include="MaxFlowAlgorithms\Library\GridGraph_3D_26C.h" />
+    <ClInclude Include="MaxFlowAlgorithms\Library\GridGraph_3D_6C.h" />
+    <ClInclude Include="MaxFlowAlgorithms\Library\GridGraph_3D_6C_MT.h" />
+    <ClInclude Include="MaxFlowAlgorithms\MaxFlowAlgorithm.h" />
+    <ClInclude Include="MaxFlowAlgorithms\ModifiedKRT\ModifiedKRT.h" />
+    <ClInclude Include="MaxFlowAlgorithms\Parallel\ParallelAlgorithm.h" />
+    <ClInclude Include="Utilities\Debug.h" />
+    <ClInclude Include="Utilities\DynamicTrees\Forest.h" />
+    <ClInclude Include="Utilities\DynamicTrees\seq-inl.h" />
+    <ClInclude Include="Utilities\DynamicTrees\seq.h" />
+    <ClInclude Include="Utilities\DynamicTrees\tree-extra.h" />
+    <ClInclude Include="Utilities\DynamicTrees\tree-inl.h" />
+    <ClInclude Include="Utilities\DynamicTrees\tree.h" />
+    <ClInclude Include="Utilities\DynamicTrees\type.h" />
+    <ClInclude Include="Utilities\FlowVerifyer.h" />
+    <ClInclude Include="Utilities\LevelLinkedLists.h" />
+    <ClInclude Include="Utilities\LinkedList.h" />
+    <ClInclude Include="Utilities\OwnDynamicTree\DynamicTree.h" />
+    <ClInclude Include="Utilities\OwnDynamicTree\SplayTree.h" />
+    <ClInclude Include="Utilities\Queue.h" />
+    <ClInclude Include="Utilities\UtilityFunctions.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Graph\Cloner.cpp" />
+    <ClCompile Include="Graph\DigraphLoader.cpp" />
+    <ClCompile Include="Graph\EdgeEnumerator.cpp" />
+    <ClCompile Include="Graph\Graph.cpp" />
+    <ClCompile Include="Graph\GraphBinaryReaderWriter.cpp" />
+    <ClCompile Include="Graph\GraphGenerator.cpp" />
+    <ClCompile Include="Graph\GraphReader.cpp" />
+    <ClCompile Include="Graph\GraphVisualizer.cpp" />
+    <ClCompile Include="Graph\GraphWriter.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\Dinic\Dinic.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\EdmundKarp\EdmundKarp.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\EdmundKarp\TestEdmundKarp.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergRao1998\BlockingFlow\BlockingFlow.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergRao1998\GoldbergRao1998.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanDyn.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\GoldbergTarjan1988\GoldbergTarjanN3.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\KingRao1992\KingRao1992.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\KingRaoTarjan1994\KingRaoTarjan1994.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\KRTModDyn\KrtModDyn.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\ModifiedKRT\ModifiedKRT.cpp" />
+    <ClCompile Include="MaxFlowAlgorithms\Parallel\ParallelAlgorithm.cpp" />
+    <ClCompile Include="Utilities\Debug.cpp" />
+    <ClCompile Include="Utilities\DynamicTrees\Forest.cpp" />
+    <ClCompile Include="Utilities\FlowVerifyer.cpp" />
+    <ClCompile Include="Utilities\LinkedList.cpp" />
+    <ClCompile Include="Utilities\QueueTests.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A49914A8-0301-4A9D-893E-1FD37A2B78E0}</ProjectGuid>
+    <RootNamespace>MaxFlow</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>TARGET_NUMBER=0;TARGET_NAME=$(Configuration);_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>../Libraries\igraph\igraph.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>TARGET_NUMBER=0;TARGET_NAME=$(Configuration);_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>../Libraries\igraph\igraph.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>../Libraries</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>TARGET_NUMBER=1;TARGET_NAME=$(Configuration);_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>../Libraries\igraph\igraph.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>../Libraries</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>TARGET_NUMBER=1;TARGET_NAME=$(Configuration);_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>../Libraries\igraph\igraph.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

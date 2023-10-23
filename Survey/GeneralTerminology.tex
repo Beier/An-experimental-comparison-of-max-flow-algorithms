@@ -1,0 +1,48 @@
+
+\section{Terminology}
+\label{TerminologySection}
+
+We use $G=(V, E)$ to symbolise the graph that we are running the max flow algorithms on.
+Here $V$ is a set of nodes, $E$ is a set of edges, and $(u, v)\in E$ is a directed edge where $u\in V$, $v \in V$ and $u \not= v$.
+We use $n$ and $m$ to symbolise the number of nodes and the number of edges in the graph, respectively.
+If $(u, v)$ exists in $E$, we assume that $(v, u)$ also exists in $E$.
+With the max flow problem, two nodes, \emph{source} and \emph{target} are given. We denote them by $s$ and $t$ respectively.
+
+We assume without loss of generality that all nodes can be reached from the source, and that all nodes can reach the target. 
+Graphs that do not satisfy this assumption can be trimmed to fit the constraint in $O(m)$ time by performing breadth first searches from the source and from the target.
+
+A \emph{path} in a graph is defined as a list of nodes $(v_1, \ldots , v_k)$ where \\
+$(v_i, v_{i+1}) \in E$ for $i=1, \ldots, k-1$ and the list contains no duplicates.
+
+Every edge $(u, v)$ has a \emph{capacity} associated with it denoted by $cap(u, v)$. The capacity of an edge must be a non-negative integer. This is an upper bound on the amount of flow we are allowed to send on the edge.
+We use $U$ to represent the maximum capacity over all edges in the graph.
+The actual \emph{flow} sent on an edge is denoted by $f(u, v)$. As with capacity, the flow on an edge must be a non negative integer. 
+\emph{Residual capacity} on an edge is the amount of flow that can still be sent on the edge without violating the capacity constraint.
+It is defined as $r(u, v) = cap(u, v) - f(u, v) + f(v, u)$. For edges $(u, v)\not\in E$, we define $cap(u, v)=f(u, v)=r(u, v)=0$.
+An edge $(u, v)$ is said to be \emph{saturated} if $r(u, v) = 0$, and the act of saturating an edge is changing the flow to make the edge become saturated.
+
+A path $P=(v_1, \ldots , v_k)$ is said to be \emph{residual} if $r(v_i, v_{i+1}) > 0$ for $i=1, \ldots, k-1$.
+An \emph{augmenting path} $P=(v_1, \ldots , v_k)$ is a residual path in $G$ where $v_1 = s$ and $v_k = t$.
+In other words, an augmenting path is a path from $s$ to $t$ in the residual network, where it is possible to send more flow.
+The \emph{bounding edges} of an augmenting path is the edges that have the minimum residual capacity of all edges in the path.
+As a consequence, if additional flow equal to the minimum residual capacity was pushed on the path, these edges would become saturated.
+
+The \emph{distance} between two nodes $u$ and $v$ is denoted $distance(u, v)$, and is the number of edges connecting nodes in the shortest residual path connecting the two nodes.
+If no such path exists, $distance(u, v)=n$. 
+This could be infinity instead of $n$, but since the longest path possible contain all nodes, there can at most be $n-1$ edges in such a path.
+Infinity can not be represented in a traditional integer, so $n$ is easier to work with.
+
+
+The \emph{excess} of a node $v$, $e(v)$ is how much flow has been sent to the node, but not sent on to other nodes. It is defined as $e(v)=\sum_{u \in V}\left(f(u, v) - f(v, u)\right)$. 
+This may generally only be negative for the node $s$ and positive for the node $t$ and 0 for all other nodes.
+
+
+In order to have a valid flow, the following conditions must be met:
+\begin{enumerate}
+  \item  $\forall v \in V \setminus \{s, t\}, e(v) = 0$ 
+  \item $\forall (u, v) \in E , f(u, v) \leq cap(u, v)$
+\end{enumerate}
+The first is referred to as the flow conservation constraint, and the second is the capacity constraint.
+Some algorithms works by manipulating \emph{preflow}, which is a flow in the graph where the excess of nodes are allowed to be positive, thus violating the flow conservation constraint.
+
+Tables of all definitions used throughout the thesis can be found in Appendix~\ref{TerminologyAppendix}.

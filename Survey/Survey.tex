@@ -1,0 +1,182 @@
+\clearpage
+\section{Survey}
+\label{SurveySection}
+
+The purpose of this survey is to give an overview of the most important papers about solving the max flow problem.
+For the algorithms presented, we give a short introduction to the main ideas and techniques used, 
+but for the details we direct the reader to the original articles.\\\\
+\makebox[\textwidth][c]{
+\begin{tabular}{ l l l l }
+Year & Authors & Running Time & Ref \\
+\hline 
+1956 & Ford, Fulkerson & $O(nmU)$ & \cite{FordFulkerson} \\
+1970 & Dinic & $O(n^2m)$ & \cite{dinic1970} \\
+1972 & Edmonds, Karp & $O(nm^2)$ & \cite{Edmonds1972} \\
+1974 & Karzanov & $O(n^3)$ & \cite{karzanov1974} \\
+1977 & Cherkasky & $O(n^2\sqrt{m})$ & \cite{Che77} \\
+1978 & Malhotra, Kumar, & $O(n^3)$  & \cite{MKM78} \\
+     & Maheshwari \\
+1979 & Gali, Naamad & $O(nm\log^2n)$ & \cite{Galil1979}\\
+1980 & Gali & $O(n^\frac{5}{3}m^\frac{2}{3})$ & \cite{Galil1980} \\
+1983 & Sleator, Tarjan & $O(nm\log n)$ & \cite{sleator1983} \\
+1984 & Tarjan & $O(n^3)$ & \cite{Tarjan1984} \\
+1985 & Gabow & $O(nm\log U)$ & \cite{Gabow1985} \\
+1988 & Goldberg, Tarjan & $O(nm\log{\frac{n^2}{m}})$ & \cite{Goldberg1988} \\
+1989 & Auija, Orlin & $O(nm+n^2\log{U})$ & \cite{AO1989} \\
+1989 & Auija, Orlin, Tarjan & $O(nm\log{\left(\frac{n}{m}\sqrt{{\log{U}}}+2\right)})$ & \cite{AOT1989} \\
+1989 & Cheriyan, Hagerup & 
+$E\left(\min{\left(
+\begin{aligned}
+&nm\log{n}\\
+&nm+n^2\log^2{n}
+\end{aligned}
+\right)}\right)$ & \cite{Cheriyan1989} \\
+1990 & Alon & $O(\min{\{nm\log{n},n^{\frac{8}{3}}\log{n}\}})$ & \cite{Alon1990} \\
+1992 & King, Rao & $O(nm + n^{2+\varepsilon})$ & \cite{King1992} \\
+1994 & King, Rao, Tarjan & $O(nm\log_{\frac{m}{n}\log{n}}{n})$ & \cite{King1994} \\
+1998 & Goldberg, Rao & $O(\min{\{n^{\frac{2}{3}},\sqrt{m}\}}m\log{(\frac{n^2}{m})}\log{U})$ & \cite{Goldberg1998} \\
+2012 & Orlin & $O(nm + m^{31/16}\log^2{n})$ & \cite{Orlin13} \\
+\hline \\
+\end{tabular}
+}
+
+The first algorithm for solving the max flow problem was introduced in 1956 by L. R. Ford and D. R. Fulkerson \cite{FordFulkerson}. 
+They proposed an algorithm that iteratively finds augmenting paths. 
+Since they posed no restrictions on the order with which paths are found, their algorithm runs in $O(nmU)$ for integer capacity constraints.
+This bound is achieved by observing that $nU$ is an upper bound on the flow that can be sent, since there can be $n$ edges out of $s$, and each of them has at most $U$ capacity.
+Each augmenting path sends at least $1$ unit of flow, so this results in $O(nU)$ augmenting paths. Finding an augmenting path can be done in $O(m)$ time, which leads to the bound of $O(nmU)$. 
+It is not guaranteed to terminate on real valued constraints.
+In 1972, J. Edmonds and R. M. Karp \cite{Edmonds1972} observed that if the augmenting path found in the algorithm by Ford and Fulkerson always is a shortest augmenting path, the maximum number of augmenting paths is $O(nm)$.
+This algorithm runs in $O(nm^2)$ time. We explain this algorithm in more detail in Section~\ref{EK1972Section}.
+
+About the same time, in 1970, E. A. Dinic \cite{dinic1970} published another improvement over the algorithm by Ford and Fulkerson.
+The paper by Dinic also includes the algorithm by Edmonds and Karp, but Dinic includes additional techniques to reduce the running time to $O(n^2m)$.
+His idea was to remove some edges in the graph, to get a layer graph which contain all paths from $s$ to $t$ that have length $k$, where $k$ is the length of the shortest augmenting path in $G$. 
+He then finds all augmenting paths in this layer graph, which is called the blocking flow. 
+After that, he calculates the residual network of the original graph augmented with the blocking flow. With this new residual network, he finds a new layer graph where $k'>k$.
+To find all paths in the layer graph, he used a depth first search. 
+Many subsequent algorithms are based on this idea of using layer graphs, but have an optimized algorithm for finding the blocking flow.
+More details on this algorithm can be found in Section~\ref{DinicSection}.
+
+The first optimization to Dinic's algorithm was published by A. V. Karzanov in 1974 \cite{karzanov1974}. He came up with a very complicated algorithm for finding the blocking flow that uses preflows.
+This algorithm reduced the running time to $O(n^3)$, which is $O(nm)$ for very dense graphs where $m=\Theta(n^2)$.
+There have been several publications that use the same basic ideas as A. V. Karzanov, but tries to simplify the algorithm.
+One example is an algorithm by V. M. Malhotra, M. P. Kumar and S. N. Maheshwari published in 1978 \cite{MKM78}. 
+Another example was by R. E. Tarjan in 1984 \cite{Tarjan1984}.
+
+B. V. Cherkasky in 1977 gave an algorithm that runs in time $O(n^2\sqrt{m})$. 
+He groups some consecutive layers together, and runs a combination of Dinic's and Karzanov's algorithms.
+Z. Gali builds on top of this idea in an algorithm published in 1980 \cite{Galil1980}. 
+He uses the idea of grouping the layers and improves it by contracting some paths in the graph into a single edge, and achieves a running time of $O(n^\frac{5}{3}m^\frac{2}{3})$.
+
+In 1979 Z. Galil and A. Naamad published a paper \cite{Galil1979} where they give an improved variation on the Dinic algorithm. 
+They noticed that the Dinic algorithm has the problem that when it finds an augmenting path, it jumps back to the node just before the bounding arch, 
+and forgets the rest of the path, which might be reused in a later path.
+Gali and Naamad built a data structure for saving the paths already visited, reducing the overall running time to $O(nm\log^2n)$.
+
+D. D. Sleator and R. E. Tarjan published an algorithm in 1983 \cite{sleator1983} where they introduced the data structure for dynamic trees, also called link-cut trees.
+They use their data structure to make a max flow algorithm based on Dinic, that has a running time of $O(nm\log n)$. 
+The advantage of using dynamic trees is that it allows you to push flow on a path in logarithmic time instead of linear time.
+
+In 1985 H. N. Gabow gives a rather simple scaling algorithm for finding the maximum flow \cite{Gabow1985}. His idea is to check if the graph has any capacities greater than $m/n$, 
+and if so, half all capacities and run the algorithm recursively. Since the capacities are integers, this only gives a near optimum solution.
+He uses Dinics algorithm on the residual network to find the correct solution. At the base of the recursion it is also running Dinics algorithm. 
+This yields a running time of $O(nm\log{U})$.
+\\\\	
+After this, the max flow algorithms started moving away from the layered idea from Dinic. 
+A. V. Goldberg and R. E. Tarjan published an algorithm \cite{Goldberg1988} that combined the preflow idea with dynamic trees, without using layer graphs.
+This algorithm is called the push relabel algorithm. They gave a simple version of it that runs in $O(n^3)$ time, 
+and then they combined it with dynamic trees and got an algorithm that runs in time $O(nm\log{\frac{n^2}{m}})$.
+Details on the algorithms presented in this paper can be found in Section~\ref{GoldbergTarjanSection}.
+Most later algorithms are based on this algorithm in some way.
+
+One of these algorithms was published in 1989 by R. K. Ahuja and J.~B.~Orlin \cite{AO1989}. 
+They modified the simple $O(n^3)$ algorithm from Goldberg and Tarjan \cite{Goldberg1988} with scaling ideas from Gabows paper 1985 \cite{Gabow1985}.
+They used these ideas to decrease the number of non-saturating pushes, which was a bottleneck in the algorithm by Goldberg and Tarjan.
+The general idea was to find the lowest integer number, called the excess dominator, that is a power of two and is higher than the excess in all nodes. 
+In each scaling iteration, a flow of at least half of the excess dominator should be pushed from nodes who can do so onto nodes which
+can recieve it, without invalidating the excess dominator. This idea lead to an algorithm running in time $O(nm+n^2\log{U})$.
+
+R. K. Ahuja, J. B. Orlin and R. E. Tarjan published an algorithm the same year \cite{AOT1989} which improved upon this algorithm.
+The first improvement was to make a better strategy for choosing the order for selecting which nodes to push flow from.
+The second improvement was to use a non constant scaling factor, so the excess dominator did not have to be a power of two.
+They also added dynamic trees to the algorithm, and incorporated some ideas from the paper by Tarjan 1984 \cite{Tarjan1984}.
+All this lead to a running time of $O(nm\log{\left(\frac{n}{m}\sqrt{{\log{U}}}+2\right)})$.
+
+In 1989 J. Cheriyan and T. Hagerup published a paper describing a new algorithm for solving the maximum-flow problem \cite{Cheriyan1989}.
+The algorithm was a randomized algorithm building on top of the algorithms described in
+Goldberg, Tarjan \cite{Goldberg1988} and Ahuja, Orlin \cite{AO1989}, and it also included the use of dynamic trees. 
+They changed Goldberg and Tarjans algorithm to use scaling, just as Ahuja and Orlin \cite{AO1989} did,
+though with a non constant scaling factor. To achieve a better time bound than \cite{Goldberg1988}
+they randomly permutated the adjancency list of each vertex at the start, and for a single vertex when relabelling it.
+They also tried to decrease the number of dynamic tree operations by only linking 
+an edge when sufficiently large flow can be send over it.
+The algorithm has an expected running time of $O(nm+n^2\log^3{n})$, and a worst case running time of $O(nm\log{n})$.
+According to \cite{Cheriyan1990}, personal communication between the authors of \cite{Cheriyan1989}
+and Tarjan lead to a better analysis of the algorithm, which resulted in an expected running time of $O(\min{\{nm\log{n},nm+n^2\log^2{n}\}})$.
+Later work by Alon \cite{Alon1990} de-randomized the algorithm
+to a deterministic algorithm having a running time of $O(\min{\{nm\log{n},n^{8/3}\log{n}\}})$
+
+J. Cheriyan, T. Hagerup and K. Mehlhorn \cite{Cheriyan1990} combined ideas from \cite{Goldberg1988}, \cite{AO1989} and \cite{Cheriyan1989}
+resulting in a new max flow algorithm.
+The idea in the algorithm is to work on a preflow in a sub-network and gradually
+add the edges as the algorithm progresses. By adding the edges in order of decreasing
+capacities they decrease the number of arithmetic operations. The bottleneck in the algorithm then becomes finding the current-edge, 
+which is the first edge in each node eligible to apply a push operation to.
+To solve this problem faster than $O(nm)$ they represent the graph as an adjacency matrix and
+partitions the matrix into sub-matrices. The resulting algorithm has a running time of $O(\frac{n^3}{\log{n}})$. 
+During the process of designing the algorithm they make a randomized version and then de-randomize it using the technique from \cite{Alon1990}.
+
+The paper by V. King and S. Rao \cite{King1992} builds on top of \cite{AO1989}. 
+It modifies a special subroutine that selects which edges to push on, and achieves a running time of $O(nm +n^{2+\varepsilon})$.
+This means that we after this paper can solve the max flow problem in $O(nm)$ time for graphs where $m>n^{1+\varepsilon}$, which is everything but sparse graphs.
+More details on this algorithm can be found in Section~\ref{KR92Secton}.
+V. King, S. Rao and R. E. Tarjan improved upon their algorithm in \cite{King1994}, resulting in a new running time of 
+$O(nm\log_{\frac{m}{n}\log{n}}{n})$.
+
+D. S. Hochbaum tried a new approach to the maximum flow problem in \cite{Hochbaum1998}. The idea was to look at a tree data structure
+designed by Lerchs and Grossman in 1965. The data structure solves the s-excess problem that is equivalent to the min-cut problem,
+which itself is the dual problem of the max-flow problem.
+The idea in the new algorithm is to manipulate pseudoflows, which like the preflow may have nodes with a higher incoming flow than outgoing,
+but also allows nodes to have a higher outgoing flow than incoming. Interestingly the algorithm does not try to maintain or even progress towards a feasible flow, 
+but instead creates pockets of nodes. Excess pockets are pockets with more incoming that outgoing flow, and deficit pockets are pockets with more outgoing than incoming flow.
+The pockets are manipulated so that no excess pockets can send additional flows to any deficit pockets.
+The complexity of the algorithm is $O(nm\log{n})$
+
+
+A. V. Goldberg and S. Rao published an algorithm in 1998 \cite{Goldberg1998} in which they combines the layer graph ideas from \cite{dinic1970}
+with the push-relabel algorithm from \cite{Goldberg1988}.
+When constructing the layer graph, instead of simply having each edge have a unit distance they
+use a distance function. The distance function used is binary, with an edge length 
+being 0 if it has high capacity and 1 otherwise. 
+The algorithm contracts cycles of 0 labelled distance edges and calculates the max-flow in the resulting graph 
+using a blocking flow algorithm developed by A. V. Goldberg and R. E. Tarjan \cite{GoldbergTarjan1990}. This idea leads to an algorithm
+with a running time of $O(\min{\{n^{\frac{2}{3}},\sqrt{m}\}}m\log{\frac{n^2}{m}}\log{U})$.
+More details on this algorithm can be found in Section~\ref{GRSection}.
+
+In the paper by J. B. Orlin \cite{Orlin13} a new notion of compacting a network is introduced. 
+It marks edges with a relatively high residual capacity as abundant. It then has various methods for contracting nodes incident to abundant arcs.
+The algorithm finds the max-flow in the contracted graph, and transforms it into a flow in the original graph. 
+The flow in the compacted graph is calculated using the algorithm described in \cite{Goldberg1998}.
+The article present several bounds on the running times. The overall running time is $O(nm + m^{31/16}\log^2{n})$. 
+Orlin show that in the case of $m$ being $O(n^{16/15 - \varepsilon})$, the algorithm runs in $O(nm)$ time.
+Combined with the result from \cite{King1992}, this means that max-flow can always be calculated in a running time of $O(nm)$.
+\cite{Orlin13} also developed an algorithm running in $O\left(n^2/\log{n}\right)$ if \\
+$m = O(n)$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

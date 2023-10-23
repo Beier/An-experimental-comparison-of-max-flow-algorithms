@@ -1,0 +1,455 @@
+\section{Goldberg And Tarjan 1988}
+\label{GoldbergTarjanSection}
+The push relabel algorithm of A. V. Goldberg and R. E. Tarjan \cite{Goldberg1988} works by manipulating the preflow in 
+a graph. First step is saturating all the edges exiting the source. Next step is moving the excess into nodes that are estimated to be closer to the target.
+If at some point the excess of a node can not reach the target, the excess is moved back into the source. In the end, the preflow of the algorithm
+satisfies the flow conservation constraint. The preflow is therefore an actual flow and in fact it is the maximum flow. 
+
+The extra notation used is in Section~\ref{GT88-Notation}. Section~\ref{GT88-N3} describes a version of the algorithm which is quite simple and runs in $O(n^3)$ time. Section
+\ref{GT88-Dyn} describes and analyses a new algorithm which uses the dynamic trees data structure, described in Section~\ref{Dynamic Trees}, and modifies the $O(n^3)$ algorithm slightly
+to obtain a running time of $O(nm\log{\frac{n^2}{m}})$. 
+Any actual modifications done to the implementations of the algorithms are described in Section~\ref{GT88-ImplementationModifications}.
+
+\subsection{Notation} \label{GT88-Notation}
+The algorithms estimate the distance from nodes to the source/target by giving a label $d(v)$ to each node $v \in V$.
+The label of the source, $d(s)$, is set to $n$ and the label of the target, $d(t)$, is set to 0. Neither is changed 
+throughout the algorithm. The label of a node $v$ has a constraint based on its edges and neighbours' labels: 
+\begin{align*}
+\forall w \in V: r(v,w) > 0 \implies d(v) \leq d(w)+1
+\end{align*}
+A labelling fulfilling this constraint is called \emph{valid}. The idea of the algorithm is that it always pushes flow to nodes with a lower label.
+
+In the theory of the algorithm the notation $f'$ will be used for allowing the flow to be negative. It is defined as $f'(u,w) = f(u,w)-f(w,u)$, meaning 
+if $f'$ is negative there is flow on the edge going the opposite direction.
+This simplifies excess from Section~\ref{TerminologySection} to: $e(v)=\sum_{u \in V}f'(u, v)$.
+The constraint $$\sum_{w \in V}{f'(v,w)} = 0, \forall v \in V \setminus \{s,t\}$$ is referred to as the anti-symmetry constraint.
+An edge $(v,w)$ is stated as \emph{eligible} if it has $r(v,w) > 0$
+A node $v$ is \emph{active} if $e(v) > 0$.
+
+\subsection{The Push Relabel Algorithm Without Dynamic Trees} \label{GT88-N3}
+In this section, a simple $O(n^3)$ version of the push relabel algorithm will be described and analysed.
+
+\subsubsection{The algorithm}
+\begin{algorithm}
+\caption{Goldberg Tarjan Push and Relabel procedures}\label{GT88PushRelabel}
+\begin{algorithmic}[1]
+\Statex
+\Require $v$ is active, $r(v, w) > 0$ and $d(v) = d(w) + 1$
+\Procedure{Push}{ Edge $(v,w)$ }
+	\State Transfer $\delta = \min{(e(v), r(v,w))}$ units of flow by updating the edges $(v,w)$ and $(w,v)$, and the excess $e(v)$ and $e(w)$.
+\EndProcedure
+\Statex
+\Require $v$ is active, and $\forall w \in V, r(v,w) > 0 \implies d(v) \le d(w)$
+\Procedure{Relabel}{$v$}
+	\State $d(v)\gets \min{\{d(w) + 1 \mid (v,w) \in E, r(v,w) > 0 \}}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The two key methods of the algorithm can be seen in Algorithm~\ref{GT88PushRelabel}. They are only applicable to active nodes.
+
+The job of the {\sc Push} procedure is to move flow from one node $v$ to another node $w$. The amount of flow that can be moved are limited by the residual 
+capacity of the edge, $(v,w)$, and by the excess of $v$. The excess of a node never becomes negative, and the capacity constraint is
+never violated. Pushes can only happen on edges $(v,w)$ where there is a positive residual capacity and the label $d(v)$ is one higher than $d(w)$.
+
+Since the push only applies under certain conditions, the {\sc Relabel} procedure's job is to make sure that these conditions can occur. Otherwise no flow can be moved in the graph.
+All nodes in the graph, besides the source, have their initial labels set to 0. The label of the source is $n$. This means that in the beginning no flow can be pushed
+around. The minimum function in the relabel procedure finds the neighbouring nodes with minimum labels~$c$. This means than when a node $v$ is relabelled to $c+1$, $v$ can push
+to all these nodes, thus enabling the push operation.
+
+To start the algorithm all edges going out from the source are saturated, which results in all the endpoint nodes of these edges become active and that there is 
+some flow to be pushed around. In case these edges form the minimum cut all the flow will be moved to the target. If not, some of the flow must be moved 
+back into the source. All edges not outgoing from the source have their flows initialized to 0.
+
+The algorithm uses the edge list for each node to determine what kind of operation to do. Each node keeps a pointer, called the \emph{current-edge},  
+to an edge in its edge-list. When the algorithm works on a node it looks at the current-edge and if the edge fulfils the requirements for a Push operation it
+performs one. If the push operation does not apply it sets the current-edge to be the next edge in the node's edge-list. If the current-edge was the last edge
+in the edge-list this operation can not be done and instead it relabels the node and sets the current-edge to be the first edge in the list of edges.
+All this logic is encapsulated in the PushRelabel method. The pseudocode can be seen in Algorithm~\ref{GT88GenericPushRelabel}.
+
+The application of a relabel operation to a node $v$ increases its label.
+This is true since when applying a relabel operation to node $v$, the labels of all the neighbours where $v$ has an eligible edge to have 
+labels higher or equal to $v$'s, it is part of the requirements. This implies that the value of $\min{\{d(w) + 1 \mid (v,w) \in E, r(v,w) > 0 \}}$, 
+is greater than $d(v)$. As the relabel operation is the only one changing the labels, this implies that the labels are always increasing.
+Note that if a node is being relabelled, it is because it has excess, and eligible edge to push on. 
+It will always be able to push it back to the node it received it from, so if it is not allowed to push back to the node it received it from, it is because the other node has a higher label.
+This means that the set $\{(v,w) \in E, r(v,w) > 0\}$ is always non empty when performing a relabel operation.
+
+In this paragraph it will be shown that all the requirements of the Relabel operation are fulfilled when it is being applied.
+The requirements for applying a relabel operation on 
+node $v$ were that $v$ is active and $\forall w \in V, r(v,w) > 0 \implies d(v) \le d(w)$. If a relabel is done on node $v$ then $v$ must be active. 
+It is then enough to show that either $d(v) \leq d(w)$ or $r(v,w) = 0$ for all outgoing edges of $v$. 
+We assume the labels are valid. If $r(v,w) \geq 0$ and $d(v) > d(w)$ then a push can be done on the edge $(v,w)$. 
+But this push can not be true because the labelling $d(v)$ has not changed since $(v,w)$ was the current-edge, so all the 
+residual capacity must have been used at that time, this means that if $r(v,w) \geq 0$ then $d(v) \le d(w)$. 
+If at some point after the last relabel $r(v,w)$ was equal to 0, then either that is still true or a push has been performed on $(w,v)$. If
+this push was done then that means that $d(w) > d(v)$, which is still the case as only $d(w)$ could have increased since then. 
+
+\begin{algorithm}
+	\caption{The $O(n^3)$ PushRelabel procedure}\label{GT88GenericPushRelabel}
+\begin{algorithmic}[1]
+\Statex
+\Require $v$ is active
+\Procedure{PushRelabel}{$v$}
+	\State Edge $e \gets$ current edge of $v$
+	\If {\Call{Push}{$e$} is applicable} 
+		\State \Call{Push}{$e$}
+	\Else
+		\If {$e$ is not the last edge of the edgelist of $v$}
+			\State set the current edge of $v$ to be the next edge
+		\Else
+			\State Set the current edge of $v$ to be the first edge in the edgelist
+			\State \Call{Relabel}{$v$}
+		\EndIf
+	\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The PushRelabel method works on a single active node. The only thing left to describe is how the algorithm chooses which node to apply the method on.
+
+The way the algorithm keeps track of which nodes are active, is by keeping a first-in-first-out queue over all active nodes. When a node
+is taken from the front of the queue the algorithm keeps applying the PushRelabel operation to it, until it either gets relabelled or it becomes inactive.
+If it gets relabelled, it is reinserted into the back of the queue.
+This means that when working on node $v$ with a current edge $(v,w)$, $v$ is deleted from the queue, and $v$ and/or $w$ may be added to the
+queue. This way of choosing which nodes to work on can be seen in the Discharge function in Algorithm~\ref{GT88Main}. The
+initialization and main loop can be seen in the same pseudocode.
+
+\begin{algorithm}
+	\caption{The Goldberg Tarjan Initialization and Main-Loop parts}\label{GT88Main}
+\begin{algorithmic}[1]
+\Statex
+\Function{MaxFlow}{$V,E,s,t$}
+	\State $d(s) \gets n$ \label{GTInitBegins}
+	\ForAll{$v \in (V \setminus\{s\})$}
+		\State $d(v) \gets 0$
+		\State $e(v) \gets 0$
+	\EndFor
+	\ForAll{$(v,w) \in E$} 
+		\State $f(v,w) \gets 0$
+	\EndFor
+	\ForAll{$(s,v) \in E$}
+		\State $f(s,v) \gets cap(s,v)$
+		\State $e(v) \gets cap(s,v)$
+		\State add $v$ to the back of $Q$
+	\EndFor \label{GTInitEnds}
+	\While{$Q \neq \emptyset$}
+		\Comment{Main-Loop}
+		\State \Call{Discharge}{}
+	\EndWhile
+	\State \Return $e(t)$
+\EndFunction
+\Statex
+\Procedure{Discharge}{}
+	\State Node $v \gets$ first element of $Q$, removed from the queue.
+	\Repeat
+		\State \Call{PushRelabel}{$v$}
+		\If {a push was performed on edge $(v,w)$ and $w$ becomes active}
+			\State Add $w$ to the back of $Q$
+		\EndIf
+	\Until $e(v) = 0 $ or $d(v) $ increases
+	\If{$e(v) > 0$} 
+		\State add $v$ to the back of $Q$
+	\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\clearpage
+
+\subsubsection{Correctness}
+To argue for correctness of the algorithm, it will be shown that:
+\begin{enumerate}
+	\item The labels of the nodes stay valid throughout the execution of the algorithm.
+	\item It is always possible to apply either a relabel or a push operation to an active node, meaning excess can not be stuck at any node.	
+	\item If a node is active, then a path exist to the source, so flow can always be moved back.
+	\item The number of relabels of a node is bounded.
+	\item After the algorithm no residual path exists from the source to the target
+\end{enumerate}
+The first item is to make sure that the algorithm does not miss a chance to push on a residual edge.
+The second to fourth items guarantee that excess is moved around and that the excess that can not be moved to the target will be moved back to the
+source, turning the preflow into an actual flow.
+The last item is combined with a classic theorem from Ford and Fulkerson \cite{FordFulkerson} to prove that
+the flow is actually a maximum-flow. The following paragraphs show all the items
+
+The labels in the graph are valid when the algorithm has been initialized, since $\forall v \in V \setminus \{s\}: d(v) = 0$ and
+$\forall v \in V: r(s,v) = 0$. A relabel operation to a node $v$ keeps the label valid. This is the case as it assigns
+a value to $d(v)$ that is 1 higher than the minimum label of all the neighbours $w$, where $r(v,w) > 0$. 
+Doing a push operation on the edge $(v,w)$ may make $(w,v)$ eligible and may remove $(v,w)$.
+This keeps the labels valid because pushing on $(v,w)$ means $d(v) = d(w)+1$, so adding edge $(w,v)$ is fine. 
+Removing an edge means removing the constraint, so that also keeps the labelling valid. This
+means that the labelling stays valid throughout the execution of the algorithm.
+
+If a node $v$ is active, it is always possible to apply either a push or a relabel operation to it.
+A relabel is only applicable when no pushes can be done since it is part of the requirements of the relabel method.
+When a relabel operation assigns $d(v)$ to a node $v$, it opens up the possibility of pushing to at least
+one node, one of the nodes with label $d(v)-1$. Hence one of the actions are always applicable.
+
+\begin{lemma} \label{GT-ActiveMeansPathToSource}
+Given a preflow $f$ if $v$ is active then the source $s$ is reachable from $v$ in the residual graph.
+\end{lemma}
+\begin{proof}
+Proof by contradiction. Denote the set of reachable nodes from $v$ in the residual graph $S$,
+and assume that $s \notin S$, Let $\bar{S} = V \setminus S$. Since there can be no residual edge
+from a node in $S$ to a node in $\bar{S}$ this means that for every pair $u \in \bar{S}$ and $w \in S, f'(u,w) \leq 0$ 
+\begin{align*}
+	\sum_{w \in S}{e(w)}&= \sum_{u \in V, w \in S}{f'(u,w)}\\
+	& = \sum_{u \in \bar{S}, w \in S}{f'(u,w)} + \sum_{u, w \in S}{f'(u,w)}\\
+	& = \sum_{u \in \bar{S}, w \in S}{f'(u,w)}\\
+	&\leq 0\\
+\end{align*}
+$\sum_{u, w \in S}{f'(u,w)}$ is equal to 0 because of anti-symmetry. Since excess is defined to be positive this means
+that all nodes $w \in S$ has $e(w) = 0$, in particular $v$, leading to a contradiction.
+$\square$
+\end{proof}
+According to Lemma~\ref{GT-ActiveMeansPathToSource} an active node $v_k$ has a path to $s$, denote it $(v_k, v_{k-1},\dots,v_o, s)$, which gives an upper bound on the label of $v_k$. 
+When relabling all the nodes in the entire path $(v_k, v_{k-1},\dots,v_o, s)$ the label difference of each edge is $d(v_i)-d(v_{i-1}) \leq 1$,
+so the maximum possible label of $v_k$ becomes 
+\begin{align*}
+	d(v_k) &\leq d(s) + (d(v_0)-d(s))+\dots+(d(v_k)-d(v_{k-1}))\\
+		&\leq d(s) + k+1\\
+		&\leq n + (n-1)\\
+		&\leq 2n\\
+\end{align*}
+Since the labels are bounded and each relabel operation increases the label of a node, this means that the number of relabel operations are bounded.
+
+To further argue about the correctness of the algorithm the classic theorem from the article by Ford and Fulkerson \cite{FordFulkerson} is used:
+\begin{theorem} \label{GT-FF}
+A flow $f$ is maximum if and only if there exists no augmenting path. That means $t$ is not reachable from $s$ in the residual network
+\end{theorem}
+\begin{lemma} \label{GT-TargetNotReachable}
+Given a preflow $f$ and a valid labelling $d$ then the target is not reachable from the source in the residual graph
+\end{lemma}
+\begin{proof}
+Proof by contradiction. Assume there exist a residual path $s = v_0, v_1,\dots,v_l = t$,
+since the labelling is valid $d(v_i) \leq d(v_{i+1})+1$ for all the edges in that path,
+since $l < n$ that means $d(s) \leq d(t) + l = 0 + l < n$, but that's a contradiction
+since $d(s) = n$.
+$\square$
+\end{proof}
+\begin{theorem}
+When the algorithm terminates the preflow is a max flow, meaning the algorithm is correct.
+\end{theorem}
+\begin{proof}
+	When the algorithm terminates the excess of all nodes $v \in V \setminus{s,t}$
+	must have $e(v) = 0$, this means the preflow is a valid flow. 
+	Theorem~\ref{GT-FF} and Lemma~\ref{GT-TargetNotReachable} together means it must be a 
+	maximum flow. 
+$\square$
+\end{proof}
+The next section analyses the running time of the algorithm. It will be done by bounding the number 
+of relabel- and push-operations being made.
+
+\subsubsection{Running time} \label{GT88-RunningTime}
+Less than $2n^2$ relabels are being done in the algorithm, since each node can be relabelled at most
+$2n$ times, and only $n-2$, $V \setminus \{s,t\}$, nodes are being relabelled.
+
+To analyse the number of pushes being done, they will be split into 2 different types of pushes, \emph{saturating} and
+\emph{non-saturating} pushes. A saturating push is when the pushing node has enough excess to use the full residual capacity
+of the edge $(v,w)$, said in other words: $r(v,w) \leq e(v)$. Non-saturating pushes are then the other case, where the excess in the node is not
+enough to fully utilize the residual edge.
+
+At most $2nm$ saturating pushes are being done in the course of the algorithm. After a saturating push has happened
+on edge $(u,v)$ a push has to be done on $(v,u)$ before another push on $(u,v)$ can happen. Since the
+pushing node has to have a label one higher than the node being pushed to, two pushes along the same edges has to have had
+relabels happen in between leading to at least a label of 2 higher when the next saturating push happens on 
+the same edge. As the max label is $2n$ this means that at most $n$ saturating pushes can be done on any edge, leading
+to a maximum of $2n$ saturating pushes for an edge and its linked edge. The number of sets of edge + linked-edge is at most $m$ meaning the
+maximum number of saturating pushes happening in total are $2nm$.
+
+The number of non-saturating pushes depends heavily upon which order the push and relabel operations are applied in. In the next sections it
+will be shown that the way the discharge method does it bounds the number of non-saturating pushes to $O(n^3)$.
+
+To analyse the discharge operation the concept of \emph{passes} over the queue~$Q$ is used. 
+The first pass, consists of applying the discharge operation to all the nodes added in the initialization
+of the algorithm. pass $i+1$ consists of treating all the ones added in pass $i$.
+\begin{lemma}\label{GT88-Passes}
+The maximum number of passes over the queue $Q$ is at most $4n^2$.
+\end{lemma}
+\begin{proof}
+A potential function is used. $\phi = \max{\{d(v)\mid v\text{ is active}\}}$. If over a pass no relabels are done, all the 
+excess is moved to nodes with lower distances thus decreasing $\phi$. If a relabel is happening and it is increasing $\phi$ this means that
+the change in $\phi$ is less than or equal to the change in the distance label. 
+The total amount of change in labels that can happen was shown in Section~\ref{GT88-RunningTime} to be less than or equal to $2n^2$.
+This means the potential only increases by $2n^2$. Every pass where it decreases, decreases it by at least 1, thus
+the number of passes where it decreases are also $2n^2$.
+Adding the passes together gives a maximum of $4n^2$ in total. $\square$
+\end{proof}
+Since all the nodes $v \in V\setminus \{s,t\}$ can at most have one non-saturating push per pass as they become inactive afterwards, the non-saturating pushes
+are bounded by $(n-2)4n^2 \leq 4n^3$. 
+
+\begin{theorem}\label{GT88-RunningTimeNonSaturating}
+The PushRelabel implementation of the algorithm leads to a running time of $O(nm)$ plus $O(1)$ per non-saturating push.
+\end{theorem}
+\begin{proof}
+Let $v$ be a vertex in $V \setminus \{s,t\}$ and $\delta_v$ the number of edges in $v$'s edge list. Each node only runs through its edge-list a certain number of times.
+At most $2n$ relabel operations are happening to each node and each contribute 2 run-throughs, since before each relabelling the entire list has been run through and the list is run through once 
+in the relabel operation itself. This leads to a total of at most $4n$ runs through the edge list, for a total of $O(n\delta_v)$ work being done per node. Meaning
+a total of $\sum_{v\in V \setminus \{s,t\}}{n\delta_v} = O(nm)$
+
+The rest of the work done by the algorithm comes from the pushes. Each push operation is constant work. The number of saturating pushes was bound to $O(nm)$.
+Adding the work done in the pushes to the work done by the run-throughs/relabels gives the theorem. 
+$\square$
+\end{proof}
+
+Combining Lemma~\ref{GT88-Passes} with Theorem~\ref{GT88-RunningTimeNonSaturating} gives a running time of $O(n^3)$, since $n \leq m \leq n^2$.
+
+\subsection{The Push Relabel Algorithm With Dynamic Trees}\label{GT88-Dyn}
+The push relabel algorithm described and analysed in the following sections is basically a slight modification of the $O(n^3)$ algorithm described in the previous sections.
+This new algorithm has a running time of $$O(nm\log{\frac{n^2}{m}})$$
+The idea is to use the dynamic trees data structure, described in Section~\ref{Dynamic Trees}, to bring the cost of doing non-saturating pushes down.
+To do this the PushRelabel method of the previous section has been replaced by a new version called \emph{TreePushRelabel}. A new function called {\sc Send} is also added. The 
+new pseudocode can be found in Algorithm~\ref{GT88TreePushRelabelSend}.
+
+\subsubsection{The Algorithm}
+The dynamic trees data structure uses amortized $O(\log{k})$ time per operation, where $k$ is the path length in a dynamic tree.
+The trees are introduced to bring the time spent on each non-saturating push down to sub-constant. The issue is that if a node $v$ has done a non-saturating push 
+on edge $e$ to node $w$ then the next time $v$ gets any excess it could likely use the same edge again each time costing a constant amount of time. The idea of
+using dynamic tree are then to save this edge in the tree by setting the parent of $v$ to be $w$ in the tree. This way an entire path can be built. 
+The algorithm can push flow along such a path of length $k$ in $O(\log{k})$ time. 
+
+The new algorithm has to maintain these paths so that only nodes where flow can be pushed between are linked in the tree. This means that if a node~$v$ is relabelled
+the algorithm cuts all the children of $v$ since the new label no longer allows for pushes from them to $v$. 
+
+Each node $v$ in the dynamic tree has a cost associated to it. This cost is used to denote how much residual capacity the edge between $v$ and its parent has.
+This means that the dynamic tree has a value on the residual capacity and based on the flow/capacity values on the edge a similarly residual capacity can be calculated.
+These two values are not synchronized since that would mean updating all the edges in a tree-path leading to an $O(k)$ time operation instead of $O(\log{k})$.
+To solve this issue an invariant is introduced stating that every active node $v$, which was defined as all nodes $v$ where $e(v) > 0$, is a root in the dynamic tree. To keep this invariant
+and also maintain the intended use of the dynamic tree all the excess added onto a node $w$ in a path has to be pushed to the root. It may
+happen that a node $v$ on the path has a too low residual capacity to allow all this excess through. In this case the algorithm pushes
+as much flow as $v$ can handle through and cuts the edge between $v$ and its parent. afterwards it repeats this operation until all
+the excess is pushed to roots of $w$ or $w$ itself becomes a root. The send operation does all this.
+
+In case a node is a root the stated residual-capacity/cost is set to infinity. In the initialization all nodes in the graph have a node representing them
+in the dynamic tree data structure, which is a root with infinity as cost.
+
+To bound the cost of each dynamic tree operation a node is only linked to its parent if the new combined path size stays below a constant $k$. This means
+that if a push from $v$ to $w$ is applicable, either the two nodes are linked and a send operation is applied to $v$ or a push happens from $v$ to $w$ followed by a send
+from $w$. These different if-branches are part of the new TreePushRelabel method which replaces the old PushRelabel procedure.
+
+\begin{algorithm}
+\caption{The Tree-PushRelabel and Send procedures}\label{GT88TreePushRelabelSend}
+\begin{algorithmic}[1]
+\Statex
+\Require $v$ is an active tree root
+\Procedure{Tree-PushRelabel}{$v$}
+	\State Edge $(v,w) \gets$ current edge of $v$
+	\If {$d(v) = d(w) + 1 $ and $r(v,w) > 0 $}
+		\If{$\Call{GetSize}{v} + \Call{GetSize}{w} \le k$}
+			\State Make $w$ the parent of $v$ in the tree by calling \Call{Link}{$v,w$}
+			\State \Call{SetCost}{$v, r(v,w)$}
+			\State \Call{Send}{$v$}
+		\Else
+			\State \Call{Push}{$(v,w)$}
+			\State \Call{Send}{$w$}
+		\EndIf
+	\Else
+		\If {$e$ is not the last edge of the edge-list of $v$}
+			\State set the current edge of $v$ to be the next edge
+		\Else
+			\State Set the current edge of $v$ to be the first edge in the edge-list
+			\State Cut all children of $v$ in the tree, also for each child $u$ Update the edge $(u,v)$ and its linked edge with the values from the dynamic trees
+			\State \Call{Relabel}{$v$}
+		\EndIf
+	\EndIf
+\EndProcedure
+\Statex
+\Require $v$ is active
+\Procedure{Send}{$v$}
+	\While{$\Call{GetRoot}{$v$} \neq v$ and $e(v) > 0$}
+		\State $\delta \gets \min{(e(v), \Call{FindMinValue}{v}})$
+		\State send $\delta$ value of flow  in the tree by calling $\Call{AddCost}{-\delta}$
+		\While{\Call{FindMinValue}{$v$} = 0}
+			\State $u \gets \Call{FindMin}{$v$} $
+			\State Update the edge $(u,parent(u))$ and its linked edge with the values from the dynamic trees
+			\State $\Call{Cut}{$u$} $
+		\EndWhile
+	\EndWhile
+\EndProcedure
+\Statex
+\Function{FindMinValue}{$v$}
+	\State $minNode \gets \Call{FindMin}{$v$}$
+	\State \Return \Call{GetCost}{$minNode$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Correctness}
+Parts of proof of correctness follows from the correctness from the previous algorithm. This is the case as the algorithm still does a relabel at
+the same time as before, and because the send method is basically a bunch of push operation done together.
+
+The send operation only sends flow allowed by the residual capacity, and it only links $v$ to $w$ if $d(v) = d(w) + 1$. The link is cut if
+$v$ or $w$ is relabelled. All this combined means that all the 'pushes' the send method does are legal and hence does not break the correctness.
+
+The only issue left is termination. If a cycle exist in the dynamic tree the algorithm will never terminate as it would keep trying to push
+the flow closer to the root, but there are no root. As described the algorithm only links $v$ to $w$ if $d(v) = d(w) + 1$, so a cycle can not happen. 
+
+This means the algorithm terminates and outputs the correct result.
+
+\subsubsection{Running time}
+Again the concept of passes over the queue needs to be used to make the following analysis. Nothing has changed from Lemma~\ref{GT88-Passes}, so
+the number of passes are still at most $4n^2$.
+\begin{lemma} \label{GT88-DynamicAdditions}
+The maximum number of additions of nodes to $Q$ is $O(nm+n^3/k)$
+\end{lemma}
+\begin{proof}
+	A node is added to $Q$ when it is relabelled or when its excess is increased above 0. The total number of relabels were bounded to $2n^2$. 
+	The excess only increases when a push or send operation has been done.
+	This can happen in two different cases the first, labelled $a$, is when the two trees are small enough to be linked 
+	and thus they are linked and a send operation is done. In the second case, labelled $b$, the trees are too big to be
+	linked, so a push operation is made followed by a send. Algorithm~\ref{GT88TreePushRelabelSend} showed
+	the pseudocode for it. The number of additions to $Q$ are in both these cases equal to the number of cuts being
+	done in the send operation plus perhaps 1 extra addition per call of the send operation. 
+	When a cut happens in the send operation it corresponds to a saturating push.
+	When it happens just before the relabel method it corresponds to the run-through of the node's edge-list. These were
+	previously bounded to both be $O(nm)$, giving a bound on the number of cuts. The number of links is at most $(n-1)$ plus the number of cuts.	
+	
+	To bound the number of send operations the number of occurrences of $a$ and $b$ is bound. 	
+	The number of times $a$ can happen is at most $O(nm)$, the maximum amount of link operations. 	
+	To bound $b$ the concept of non-saturating occurrences is used. A non-saturating occurrence is when no cut happens 
+	in the send operation. This corresponds to a non-saturating push.
+	
+	We will refer to the dynamic tree containing node $v$ as $T_v$. 
+	Any tree with a path length greater than $k/2$ is noted as \emph{large} and otherwise it is \emph{small}.
+	If $b$ happens it means that $|T_v| + |T_w| > k$, this means that either $T_v$ or $T_w$ is large. 
+	
+	We first look at the case where $T_v$ is $large$. Since this is a non-saturating occurrence all the excess is moved from root node $v$ in $T_v$
+	into $T_w$ making $v$ inactive. Meaning this can only happen once per pass. 
+	
+	If the tree $T_v$ has changed(linked/cut) since the beginning of the pass, we charge the cost of the non-saturating operation to this operation. 
+	This happens at most $O(nm)$ times over the course of the algorithm. If the tree
+	has not been changed since the beginning of the pass the cost is paid for by the tree $T_v$. Since at most $n/(k/2) = 2n/k$ large
+	trees exist at a given pass, the total cost is $4n^2 \cdot 2n/k = O(n^3/k)$ over all passes. Added together this is $O(nm+n^3/k)$.
+	
+	In the case that $T_w$ is large, the push and send operation done adds the root of $T_w$ to $Q$, this can only happen once per pass.
+	From here a similarly argument to the previous paragraph can be made also leading to a cost of $O(nm+n^3/k)$
+	
+	Adding all the costs together gives a bound of $O(nm+n^3/k)$ additions$\square$
+\end{proof}
+
+\begin{theorem}\label{GT88-DynamicRunningTime}
+The push relabel algorithm using dynamic trees has a running time of $O(nm\log{k})$ plus $\log{k}$ for each addition
+of a node to the queue $Q$.
+\end{theorem}
+\begin{proof}
+	Since the algorithm bounds each dynamic tree to a maximum size of $k$ that means each tree operation costs $O(\log{k})$.
+	Each tree-PushRelabel operation takes $O(1)$ time + $O(1)$ tree-operations + $O(1)$ tree-operations for each cut either happening
+	in the send method or just before a relabel. Just as in Theorem 
+	\ref{GT88-RunningTimeNonSaturating} the number of tree-PushRelabels are $O(nm)$ plus some extra. In~\ref{GT88-RunningTimeNonSaturating}
+	the extra was bounded by the number of pushes, in this theorem it's bounded by the number of nodes added to $Q$, each addition leading to
+	$O(1)$ tree-operations. Putting all these facts together gives the theorem.
+	$\square$
+\end{proof}
+
+Theorem~\ref{GT88-DynamicRunningTime} and Lemma~\ref{GT88-DynamicAdditions} combined gives a running time of
+$O(nm\log{k} + (nm+n^3/k)\log{k})$ setting $k = n^2/m$ gives a final running time of the dynamic version 
+of the push relabel algorithm of $O(nm\log{\frac{n^2}{m}})$
+\subsection{Implementation Optimizations}\label{GT88-ImplementationModifications}
+This section describes some of the modification done to actually implement the algorithm.
+
+Two different versions of the push relabel algorithm have been implemented. One using dynamic trees
+and one without them.
+
+When the algorithm with dynamic trees terminates some of the nodes might still be linked in a dynamic tree, meaning the
+calculated residual capacity on the edges might be wrong. To fix this the algorithm runs an extra procedure after it has terminated.
+The procedure runs through the dynamic trees and looks for any linked nodes, if it finds some, it updates the graph with the values from the tree.
+	

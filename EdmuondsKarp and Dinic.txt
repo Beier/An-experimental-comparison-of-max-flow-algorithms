@@ -1,0 +1,53 @@
+
+Notation and Definitions
+
+We use n to denote the number of nodes in a graph, and m to denote the number of edges. 
+Without loss of generality, we assume that $n <= m <= n^2$. 
+If $m < n$m we would have some nodes that are not reachable from s, and we would simply trim the graph with a breadth first search in $O(n+m)$ time.
+If we trim away t, we would already know that the max flow is zero.
+In the case that $n^2 < m$ there would have to be either edges pointing to and from the same node, which server no purpose for max flow and can be trimmed,
+or some pair of nodes (v, w) with multiple edges between them, which could simply be merged into one edge with the summed up capacity.
+
+We use F to denote the maximum flow value of a graph, s to denote the source node, and t to denote the target node of the max flow. 
+
+
+
+Edmonds Karp
+
+The Edmonds Karp algorithm is one of the first and simplest max flow algorithms. It was published in 1970 by Yefim Dinic and in 1972 by Jack Edmonds and Richard Karp.
+It is a small variation on the Ford Fulkerson algorithm from 1956, that brings the worst case running time from $O(m*F)$ to $O(nm^2)$.
+It works by continously finding augmenting paths, and sending as much flow as possible on that path. An augmenting path is a path from s to t where it is possible to send more flow.
+The change from Ford Fulkerson to Edmonds Karp is the constraint that we should always find the shortest possible augmenting path. 
+The shortest augmenting path can be found with a breadth first search in $O(m)$ time.
+If we order the nodes acording to their distance from s, we note that the maximum distance to t is n. 
+With an augmenting path, there will be an edge e from v to w that has the smallest residual capacity of all the edges, this edge will be refered to as the bounding edge. 
+When saturating the path, the bounding edge can not be used in an augmenting path until the distance from s to v becomes greater than the distance from s to w, 
+and an augmenting path taking the edge in the opposite direction is found.
+We never reduce the distance from s to any node, so the only way the distance from s to v becomes greater than the distance from s to w is if the distance from s to v increases
+as a result of saturating edges. 
+Once the distance from s to v is greater than n, there is no reason to take the edge anymore, so one edge can only be saturated in $n/2$ augmenting paths.
+To wrap it up, finding an augmenting path takes $O(m)$ time, each path will have at least one bounding edge, 
+and we can only have up to n augmenting paths with the same edge being bounding.
+There are m edges, so this results in the running time $O(nm^2)$.
+
+
+
+Dinic
+The dinic algorithm was published in 1970 by Yefim Dinic. It is the paper that introduced the level graph and blocking flow, 
+which is basically a way of reducing the size of the graph before looking for augmenting paths.
+The running time of this algorithm is $O(n^2m)$ which should make it perform better on dense graphs than Edmonds Karp.
+It works by first doing a breath first search to filter some of the edges. In the search it marks nodes acording to their distance from s. 
+Only edges e from v to w where $dist(s, v) < dist(s, w)$ are used in the next step. This results in a level graph that potentially has much fewer edges than the original graph.
+All paths from s to t will have the same length in this graph.
+We then run a single depth first search on the graph to find all augmenting paths of length k. 
+For every augmenting path, we send the flow on the path, jump back behind the first bounding edge on the path, and continue the depth first search from there.
+Once that is done, we compute the residual network of the original graph, and repeat the algorithm until we find no more augmenting paths.
+
+Computing the level graph was done with a breath first search, which takes $O(m)$. 
+Running the depth first search takes $O(nm)$ time, since there are O(m) paths, and they are O(n) long.
+Every time we have found a blocking flow in a level graph, we have found all augmenting paths of length k. The next level graph must have augmenting paths longer than k.
+The longest path possible from s to t is n, so we can calculate the level graph and blocking flow in at most n iterations. This yields the running time $n(m+nm)=O(n^2m)$.
+
+Dynamic trees can be utilized to find the blocking flow in $O(mlog(n))$, reducing the running time to $O(nmlog(n))$, but since this is not part of the original algorithm, 
+we choose not to use them. 
+

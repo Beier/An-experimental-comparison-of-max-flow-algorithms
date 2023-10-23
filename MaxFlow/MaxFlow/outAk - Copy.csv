@@ -1,0 +1,160 @@
+Size;Algorithm;Time
+;EK;0
+;EK;0
+;EK;0
+;Dinic;0
+;Dinic;0
+;Dinic;0
+;GT N3;0
+;GT N3;0
+;GT N3;0
+;GT Dyn;0.001
+;GT Dyn;0
+;GT Dyn;0
+;KR1992;0.001
+;KR1992;0.001
+;KR1992;0.001
+;KR Mod;0
+;KR Mod;0
+;KR Mod;0
+;GR;0
+;GR;0
+;GR;0.001
+;EK;0
+;EK;0
+;EK;0
+;Dinic;0
+;Dinic;0
+;Dinic;0
+;GT N3;0
+;GT N3;0
+;GT N3;0
+;GT Dyn;0
+;GT Dyn;0
+;GT Dyn;0
+;KR1992;0.003
+;KR1992;0.003
+;KR1992;0.002
+;KR Mod;0
+;KR Mod;0
+;KR Mod;0
+;GR;0.001
+;GR;0.002
+;GR;0.001
+;EK;0
+;EK;0
+;EK;0
+;Dinic;0
+;Dinic;0
+;Dinic;0
+;GT N3;0
+;GT N3;0
+;GT N3;0
+;GT Dyn;0
+;GT Dyn;0
+;GT Dyn;0
+;KR1992;0.014
+;KR1992;0.013
+;KR1992;0.012
+;KR Mod;0
+;KR Mod;0
+;KR Mod;0
+;GR;0.005
+;GR;0.005
+;GR;0.005
+;EK;0
+;EK;0.001
+;EK;0
+;Dinic;0
+;Dinic;0
+;Dinic;0
+;GT N3;0
+;GT N3;0
+;GT N3;0
+;GT Dyn;0.001
+;GT Dyn;0
+;GT Dyn;0
+;KR1992;0.058
+;KR1992;0.051
+;KR1992;0.05
+;KR Mod;0
+;KR Mod;0
+;KR Mod;0
+;GR;0.009
+;GR;0.008
+;GR;0.008
+;EK;0
+;EK;0.001
+;EK;0
+;Dinic;0.001
+;Dinic;0.001
+;Dinic;0.001
+;GT N3;0
+;GT N3;0
+;GT N3;0
+;GT Dyn;0.001
+;GT Dyn;0
+;GT Dyn;0.001
+;KR1992;0.198
+;KR1992;0.198
+;KR1992;0.2
+;KR Mod;0.001
+;KR Mod;0.001
+;KR Mod;0.001
+;GR;0.029
+;GR;0.029
+;GR;0.029
+;EK;0.002
+;EK;0.002
+;EK;0.002
+;Dinic;0.004
+;Dinic;0.005
+;Dinic;0.004
+;GT N3;0.001
+;GT N3;0.002
+;GT N3;0.002
+;GT Dyn;0.002
+;GT Dyn;0.002
+;GT Dyn;0.002
+;KR1992;0.784
+;KR1992;0.792
+;KR1992;0.785
+;KR Mod;0.005
+;KR Mod;0.004
+;KR Mod;0.004
+;GR;0.078
+;GR;0.078
+;GR;0.077
+;EK6;0.009
+;EK6;0.009
+;EK6;0.008
+;Dinic;0.016
+;Dinic;0.017
+;Dinic;0.016
+;GT N3;0.005
+;GT N3;0.005
+;GT N3;0.005
+;GT Dyn;0.005
+;GT Dyn;0.006
+;GT Dyn;0.006
+;KR1992;3.175
+;KR1992;3.312
+;KR1992;3.315
+;KR Mod;0.016
+;KR Mod;0.014
+;KR Mod;0.014
+;GR6;0.271
+;GR6;0.271
+;GR6;0.271
+;EK0;0.046
+;EK0;0.038
+;EK0;0.038
+;Dinic;0.075
+;Dinic;0.076
+;Dinic;0.076
+;GT N3;0.017
+;GT N3;0.018
+;GT N3;0.018
+;GT Dyn;0.014
+;GT Dyn;0.014
+;GT Dyn;0.014

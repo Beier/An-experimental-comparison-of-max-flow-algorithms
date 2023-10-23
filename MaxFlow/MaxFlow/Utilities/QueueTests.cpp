@@ -1,0 +1,8 @@
+
+
+namespace Tests
+{
+	void TestQueue()
+	{
+	}
+}

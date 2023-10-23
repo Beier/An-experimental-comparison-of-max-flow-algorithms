@@ -1,0 +1,24 @@
+Size;Algorithm;Time
+32;KR Mod Dyn;0.001
+32;KR Mod Dyn;0
+32;KR Mod Dyn;0.001
+64;KR Mod Dyn;0.002
+64;KR Mod Dyn;0.001
+64;KR Mod Dyn;0.002
+128;KR Mod Dyn;0.009
+128;KR Mod Dyn;0.007
+128;KR Mod Dyn;0.007
+256;KR Mod Dyn;0.047
+256;KR Mod Dyn;0.034
+256;KR Mod Dyn;0.034
+512;KR Mod Dyn;0.206
+512;KR Mod Dyn;0.175
+512;KR Mod Dyn;0.171
+1024;KR Mod Dyn;0.912
+1024;KR Mod Dyn;0.662
+1024;KR Mod Dyn;0.778
+2048;KR Mod Dyn;4.218
+2048;KR Mod Dyn;3.124
+2048;KR Mod Dyn;3.711
+4096;KR Mod Dyn;19.125
+4096;KR Mod Dyn;14.759
